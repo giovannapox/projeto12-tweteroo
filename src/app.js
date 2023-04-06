@@ -21,7 +21,7 @@ app.post("/tweets", (req, res) => {
     const usuarioCadastrado = usuarios.find(user => user.username === username);
     const avatar = usuarioCadastrado.avatar;
     
-    if(!usuarioCadastrado){
+    if(usuarioCadastrado === undefined){
         return res.status(401).send("UNAUTHORIZED");
     }
 
