@@ -31,11 +31,26 @@ app.post("/tweets", (req, res) => {
 })
 
 app.get("/tweets", (req, res) => {
-    const ultimosTweets = tweets.slice(-10);
-    
+    const ultimosTweets = [];
+
+    for (let i = 0; i < 10; i++) {
+        
+        if (i < tweets.length) {
+            ultimosTweets.push({
+                username: tweets[i].username,
+                avatar: acharAvatar(tweets[i].username),
+                tweet: tweets[i].tweet,
+            });
+        }
+      }
+
     return res.send(ultimosTweets);
 })
 
+function acharAvatar (username) {
+    const user = usuarios.find((u) => username === u.username);
+    return user.avatar;
+  }
 
 const PORT = 5000;
 app.listen(PORT, () => console.log(`Rodando na porta ${PORT}`));
