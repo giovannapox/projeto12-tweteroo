@@ -23,34 +23,20 @@ app.post("/tweets", (req, res) => {
     
     if(!usuarioCadastrado){
         return res.status(401).send("UNAUTHORIZED");
+    } else {
+        const novoTweet = { username, avatar: usuarioCadastrado.avatar, tweet };
+        tweets.push(novoTweet);
+        return res.status(201).send("OK");
     }
 
-    const novoTweet = { username, tweet };
-    tweets.push(novoTweet);
-    return res.status(201).send("OK");
 })
 
 app.get("/tweets", (req, res) => {
-    const ultimosTweets = [];
-
-    for (let i = 0; i < 10; i++) {
-        
-        if (i < tweets.length) {
-            ultimosTweets.push({
-                username: tweets[i].username,
-                avatar: acharAvatar(tweets[i].username),
-                tweet: tweets[i].tweet,
-            });
-        }
-      }
+    const ultimosTweets = tweets.slice(-10);
 
     return res.send(ultimosTweets);
 })
 
-function acharAvatar (username) {
-    const user = usuarios.find((u) => username === u.username);
-    return user.avatar;
-  }
 
 const PORT = 5000;
 app.listen(PORT, () => console.log(`Rodando na porta ${PORT}`));
